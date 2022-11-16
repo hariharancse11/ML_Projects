@@ -1,4 +1,4 @@
-# ML_Projects
+# Flask
 
 To install Flask
 Just go to your command prompt and type
