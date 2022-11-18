@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit</title>
+    
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">   
+
+<script type="text/javascript" src="{{ url_for('static',filename='javascript/script.js') }}">
+        
+
+    </script>
+</head>
+
+<body>
+    <h1>Enter your marks below</h1>
+    <form action='/submit' method="post">
+        <label for="Science"><h3>Science:</h3></label><br>
+        <input type="text" id='science' name='science' placeholder="Enter your score"><br>
+        <label for="Maths"><h3>Maths:</h3></label><br>
+        <input type="text" id='maths' name='maths' placeholder="Enter your score"><br>
+        <label for="DataScience"><h3>Data Science:</h3></label><br>
+        <input type="text" id='datascience' name='datascience' placeholder="Enter your score"><br>
+        <label for="History"><h3>History:</h3></label><br>
+        <input type="text" id='history' name='history' placeholder="Enter your score"><br>
+        <label for="WildLife"><h3>Wild Life:</h3></label><br>
+        <input type="text" id='wildlife' name='wildlife' placeholder="Enter your score"><br>
+        <br>
+        <input type="submit" name="Submit">
+    </form>
+</body>
+</html>
