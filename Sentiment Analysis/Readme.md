@@ -5,9 +5,10 @@ And also a feature is added based on the output, a star rating is automatically 
 
 
 Home Page:
-![Screenshot (23)](https://user-images.githubusercontent.com/33338812/204269672-df691aa4-7159-4334-aece-d7a3641853da.png)
+
+![Screenshot (23)](https://user-images.githubusercontent.com/33338812/204271203-6b60f4af-2890-47af-b9f7-e8a2659b3eed.png)
 
 Result Page:
 
-![Screenshot (24)](https://user-images.githubusercontent.com/33338812/204269660-13d59b93-cf49-4763-9010-ee227fb6b1d6.png)
+![Screenshot (24)](https://user-images.githubusercontent.com/33338812/204271196-df4974b4-779f-4e46-b687-58a63cdecdb3.png)
 
