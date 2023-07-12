@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -7,16 +7,18 @@ from rest_framework.decorators import api_view
 def to_speech(request):
     from gtts import gTTS
     from pydub import AudioSegment
+    import os
 
-    text, speed = request.data.get('text'),request.data.get('speed')
-    print(text,speed)
+    text, speed,language = request.data.get('text'),request.data.get('speed'),request.data.get('language')
+    print(text,speed,language)
 
     # Create a gTTS object
-    tts = gTTS(text)
+    tts = gTTS(text, lang=language)
 
     # Save the audio as a temporary file
-    temp_file = "temp.mp3"
+    temp_file = "audio.mp3"
     tts.save(temp_file)
+
 
     # Load the audio file using pydub
     audio = AudioSegment.from_file(temp_file, format="mp3")
@@ -29,10 +31,23 @@ def to_speech(request):
     })
 
     # Export the adjusted audio
-    output_file = "output.mp3"
+    output_file = "audio.mp3"
     adjusted_audio.export(output_file, format="mp3")
 
-    # Delete the temporary file
-    import os
-    os.remove(temp_file)
+    audio_file_path = output_file  # Replace with the actual audio file path
+
     print("Text converted to speech")
+
+    with open(audio_file_path, 'rb') as f:
+        audio_data = f.read()
+
+    response = HttpResponse(audio_data, content_type='audio/mpeg')
+    response['Content-Disposition'] = 'attachment; filename="audio.mp3"'
+
+    # Save the audio file in the local project folder
+    project_folder = os.path.dirname(os.path.abspath(__file__))
+    local_file_path = os.path.join(project_folder, 'audio.mp3')
+    with open(local_file_path, 'wb') as f:
+        f.write(audio_data)
+
+    return response
