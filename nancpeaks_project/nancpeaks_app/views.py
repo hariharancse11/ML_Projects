@@ -9,8 +9,8 @@ def to_speech(request):
     from pydub import AudioSegment
     import os
 
-    text, speed,language = request.data.get('text'),request.data.get('speed'),request.data.get('language')
-    print(text,speed,language)
+    text,language = request.data.get('text'), request.data.get('language')
+    print(text,language)
 
     # Create a gTTS object
     tts = gTTS(text, lang=language)
@@ -20,21 +20,21 @@ def to_speech(request):
     tts.save(temp_file)
 
 
-    # Load the audio file using pydub
-    audio = AudioSegment.from_file(temp_file, format="mp3")
-    print(temp_file)
+    # # Load the audio file using pydub
+    # audio = AudioSegment.from_file(temp_file, format="mp3")
+    # print(temp_file)
+    #
+    # # Adjust the speed by changing the framerate
+    # speed_multiplier = speed  # Increase by 50%
+    # adjusted_audio = audio._spawn(audio.raw_data, overrides={
+    #     "frame_rate": int(audio.frame_rate * speed_multiplier)
+    # })
+    #
+    # # Export the adjusted audio
+    # output_file = "audio.mp3"
+    # adjusted_audio.export(output_file, format="mp3")
 
-    # Adjust the speed by changing the framerate
-    speed_multiplier = speed  # Increase by 50%
-    adjusted_audio = audio._spawn(audio.raw_data, overrides={
-        "frame_rate": int(audio.frame_rate * speed_multiplier)
-    })
-
-    # Export the adjusted audio
-    output_file = "audio.mp3"
-    adjusted_audio.export(output_file, format="mp3")
-
-    audio_file_path = output_file  # Replace with the actual audio file path
+    audio_file_path = temp_file  # Replace with the actual audio file path
 
     print("Text converted to speech")
 
