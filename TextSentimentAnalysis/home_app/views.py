@@ -13,7 +13,7 @@ def predict(request):
     sentiment = blob.sentiment.polarity
 
     # Print the sentiment score
-    return Response(sentiment)
+    return Response({"sentiment": sentiment})
 
 @api_view(['GET'])
 def home(request):
