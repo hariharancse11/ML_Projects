@@ -16,9 +16,7 @@ def to_speech(request):
     tts = gTTS(text, lang=language)
 
     # Generate the audio data in memory
-    audio_data = BytesIO()
-    tts.save(audio_data)
-    audio_data.seek(0)
+    audio_data = tts.get_audio_data()
 
     response = HttpResponse(audio_data, content_type='audio/mpeg')
     response['Content-Disposition'] = 'attachment; filename="audio.mp3"'
