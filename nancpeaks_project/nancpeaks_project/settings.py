@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     'nancpeaks_app',
     'rest_framework',
+    'corsheaders',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,10 +47,11 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'nancpeaks_project.urls'
@@ -76,14 +78,14 @@ WSGI_APPLICATION = 'nancpeaks_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
-
+CORS_ORIGIN_ALLOW_ALL = True
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -119,8 +121,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_ROOT = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIAT2OG7D64PK4TAK2G'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'nancpeaks'
+AWS_QUERYSTRING_AUTH = False

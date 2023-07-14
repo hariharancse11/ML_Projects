@@ -1,25 +1,29 @@
-from django.shortcuts import render,HttpResponse
-from rest_framework.response import Response
+import os
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from gtts import gTTS
-from io import BytesIO
-from django.http import HttpResponse
+from .models import Speech
+from django.conf import settings
+import boto3
 
-# Create your views here
 @api_view(['POST'])
 def to_speech(request):
     text = request.data.get('text')
-    language = request.data.get('language')
-    print(text, language)
+    lang = request.data.get('language')
 
-    # Create a gTTS object
-    tts = gTTS(text, lang=language)
 
-    # Generate the audio data in memory
-    audio_data = tts.get_audio_data()
+    # Create a gTTS object and generate an MP3 file
+    tts = gTTS(text,lang=lang)
+    mp3_file_path = os.path.join(settings.MEDIA_ROOT, 'speech.mp3')
+    tts.save(mp3_file_path)
 
-    response = HttpResponse(audio_data, content_type='audio/mpeg')
-    response['Content-Disposition'] = 'attachment; filename="audio.mp3"'
+    file_path = 'media/speech'+'.mp3'
+    with open(file_path, 'rb') as file:
+        audio = Speech()
+        id = audio.audio.save(os.path.basename(file_path), file, save=True)
 
-    return response
+    audio_url = audio.audio.url
+    
+    return Response(audio_url)
+
 
