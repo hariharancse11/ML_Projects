@@ -5,6 +5,10 @@ from django.http import HttpResponse
 # Create your views here.
 from gtts import gTTS
 import os
+from django.core.files.storage import default_storage
+from .models import Speech
+from django.core.files import File
+
 
 @api_view(['POST'])
 def to_speech(request):
@@ -16,10 +20,17 @@ def to_speech(request):
 
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
+    file_data = File(open(audio_file_path, 'rb'))
+
+    speech = Speech.objects.create(text=text,audio=file_data)
+    speech.save()
+
+
+
     print("Text converted to speech")
     # audio = AudioSegment.from_mp3(audio_file_path)
     # new_file = speedup(audio,1.5,150)
-    # new_file.export("file.mp3", format="mp3")
+    # new_file.export("file.mp3", format="mp3") 
 
     with open(audio_file_path, 'rb') as f:
         audio_data = f.read()
