@@ -11,19 +11,21 @@ def to_speech(request):
     text = request.data.get('text')
     lang = request.data.get('language')
 
+    # Generate the speech
+    tts = gTTS(text, lang=lang)
 
-    # Create a gTTS object and generate an MP3 file
-    tts = gTTS(text,lang=lang)
-    mp3_file_path = os.path.join(settings.MEDIA_ROOT, 'speech.mp3')
-    tts.save(mp3_file_path)
+    # Save the speech directly to S3 bucket
+    s3 = boto3.client('s3',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+    bucket_name = 'nancpeaks'  # Replace with your S3 bucket name
+    mp3_file_key = 'media/speech.mp3'  # Adjust the key or path in the bucket as needed
 
-    file_path = 'media/speech'+'.mp3'
-    with open(file_path, 'rb') as file:
-        audio = Speech()
-        id = audio.audio.save(os.path.basename(file_path), file, save=True)
+    s3.put_object(Body=tts.save_to_string(), Bucket=bucket_name, Key=mp3_file_key)
 
-    audio_url = audio.audio.url
-    
+    # Get the URL of the uploaded file
+    audio_url = f"https://{bucket_name}.s3.amazonaws.com/{mp3_file_key}"
+
+    # Return the URL of the uploaded file as the response
     return Response(audio_url)
-
 
