@@ -10,7 +10,9 @@ from .models import Speech
 from django.core.files import File
 
 
-@api_view(['POST'])
+
+@csrf_exempt
+@api_view(['GET'])
 def to_speech(request):
     text, language, speed = request.data.get('text'),request.data.get('language'),request.data.get('speed')
     # Example usage
@@ -20,11 +22,11 @@ def to_speech(request):
 
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
-    file_data = File(open(audio_file_path, 'rb'))
+    local_file_path = '/path/to/generated/file.mp3'
+    with open(local_file_path, 'rb') as f:
+        file_data = File(f)
 
-    speech = Speech.objects.create(text=text,audio=file_data)
-    speech.save()
-
+    
 
 
     print("Text converted to speech")
