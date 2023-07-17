@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ktl((k)trs%&t$n)a%9@+emp!_hmnlm+%(zy=9%m1u86$&d5r-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'rest_framework',
     'nancpeaks',
-    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
