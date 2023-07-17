@@ -7,6 +7,7 @@ from gtts import gTTS
 import os
 from django.core.files.storage import default_storage
 from .models import Speech
+from django.views.decorators.csrf import csrf_exempt
 from django.core.files import File
 
 
