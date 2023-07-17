@@ -25,7 +25,7 @@ def to_speech(request):
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
     local_file_path = '/path/to/generated/file.mp3'
-    with open(local_file_path, 'rb') as f:
+    with open(audio_file_path, 'rb') as f:
         file_data = File(f)
 
     
