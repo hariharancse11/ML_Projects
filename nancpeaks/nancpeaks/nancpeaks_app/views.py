@@ -3,9 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
 # Create your views here.
-from pydub import AudioSegment
 from gtts import gTTS
-from pydub.effects import speedup
 import os
 
 @api_view(['POST'])
@@ -19,9 +17,9 @@ def to_speech(request):
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
     print("Text converted to speech")
-    audio = AudioSegment.from_mp3(audio_file_path)
-    new_file = speedup(audio,1.5,150)
-    new_file.export("file.mp3", format="mp3")
+    # audio = AudioSegment.from_mp3(audio_file_path)
+    # new_file = speedup(audio,1.5,150)
+    # new_file.export("file.mp3", format="mp3")
 
     with open(audio_file_path, 'rb') as f:
         audio_data = f.read()
