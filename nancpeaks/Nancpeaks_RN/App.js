@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Button, View, Platform } from 'react-native';
+import { StyleSheet, Button, View, Platform,TextInput } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { shareAsync } from 'expo-sharing';
 import {useState} from 'react';
 
 export default function App() {
-  const [text, setText] = useState('You made it!');
-  const [language, setLanguage] = useState('en');
+  const [text, setText] = useState('');
+  const [language, setLanguage] = useState('');
   const [speed, setSpeed] = useState(1);
   
   const downloadFromAPI = async () => {
@@ -52,8 +52,27 @@ export default function App() {
   };
 
   return (
+    
     <View style={styles.container}>
-        <Button title="Download From API" onPress={downloadFromAPI} />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter text"
+        value={text}
+        onChangeText={setText}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter language"
+        value={language}
+        onChangeText={setLanguage}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Enter speed"
+        value={speed}
+        onChangeText={setSpeed}
+      />
+      <Button title="POST to API" onPress={downloadFromAPI} />
       <StatusBar style="auto" />
     </View>
   );

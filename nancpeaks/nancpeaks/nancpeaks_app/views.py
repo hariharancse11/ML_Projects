@@ -16,6 +16,11 @@ from django.core.files import File
 @api_view(['GET'])
 def to_speech(request):
     text, language, speed = request.data.get('text'),request.data.get('language'),request.data.get('speed')
+    res = text_to_speech(text,language,speed)
+    return res
+
+def text_to_speech(text, language, speed):
+    
     # Example usage
     #text, language, speed = 'Hola como estas?', 'es', 1.2
     tts = gTTS(text=text, lang=language, slow=False)
