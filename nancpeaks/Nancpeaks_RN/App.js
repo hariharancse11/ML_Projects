@@ -1,53 +1,40 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Button, View, TextInput, Platform } from 'react-native';
-import * as FileSystem from 'expo-file-system';
-import { shareAsync } from 'expo-sharing';
 
 export default function App() {
   const [text, setText] = useState('');
   const [language, setLanguage] = useState('');
   const [speed, setSpeed] = useState('');
 
-  const downloadFromAPI = async () => {
-    const filename = "MissCoding";
-    const localhost = Platform.OS === "android" ? "10.0.2.2" : "127.0.0.1";
+  const postToAPI = async () => {
+    const url = ' http://127.0.0.1:8000/';
 
-    const params = new URLSearchParams();
-    params.append('text', text);
-    params.append('language', language);
-    params.append('speed', speed);
+    const requestBody = {
+      text,
+      language,
+      speed,
+    };
 
-    const url = `http://35.173.186.103:8000/?${params.toString()}`;
-
-    const result = await FileSystem.downloadAsync(
-      url,
-      FileSystem.documentDirectory + filename,
-      {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
         headers: {
-          "MyHeader": "MyValue"
-        }
-      }
-    );
-    console.log(result);
-    save(result.uri, filename, result.headers["Content-Type"]);
-  };
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
 
-  const save = async (uri, filename, mimetype) => {
-    if (Platform.OS === "android") {
-      const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-      if (permissions.granted) {
-        const base64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
-        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, filename, mimetype)
-          .then(async (uri) => {
-            // Save logic
-          })
-          .catch(e => console.log(e));
+      if (response.ok) {
+        // Request succeeded
+        const result = await response.json();
+        console.log(result);
       } else {
-        shareAsync(uri);
+        // Request failed
+        console.log('Request failed:', response.status);
       }
-    } else {
-      shareAsync(uri);
+    } catch (error) {
+      console.log('Error:', error.message);
     }
   };
 
@@ -71,7 +58,7 @@ export default function App() {
         value={speed}
         onChangeText={setSpeed}
       />
-      <Button title="Download From API" onPress={downloadFromAPI} />
+      <Button title="POST to API" onPress={postToAPI} />
       <StatusBar style="auto" />
     </View>
   );

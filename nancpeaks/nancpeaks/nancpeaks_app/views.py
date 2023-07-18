@@ -13,7 +13,7 @@ from django.core.files import File
 
 
 @csrf_exempt
-@api_view(['GET'])
+@api_view(['POST'])
 def to_speech(request):
     text, language, speed = request.data.get('text'),request.data.get('language'),request.data.get('speed')
     # Example usage
