@@ -8,7 +8,7 @@ export default function App() {
   const [speed, setSpeed] = useState('');
 
   const postToAPI = async () => {
-    const url = ' http://127.0.0.1:8000/';
+    const url = 'http://35.173.186.103:8000/';
 
     const requestBody = {
       text,

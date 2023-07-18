@@ -21,6 +21,7 @@ def to_speech(request):
     tts = gTTS(text=text, lang=language, slow=False)
     tts.speed = speed
     tts.save("output.mp3")
+    print(text, language, speed)
 
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
