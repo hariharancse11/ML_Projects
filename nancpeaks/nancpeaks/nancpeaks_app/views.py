@@ -14,10 +14,10 @@ from django.core.files import File
 
 @csrf_exempt
 @api_view(['GET'])
-def to_speech(request):
+def to_speech(request,text, language, speed):
     text, language, speed = request.data.get('text'),request.data.get('language'),request.data.get('speed')
     # Example usage
-    text, language, speed = 'Hola como estas?', 'es', 1.2
+    #text, language, speed = 'Hola como estas?', 'es', 1.2
     tts = gTTS(text=text, lang=language, slow=False)
     tts.speed = speed
     tts.save("output.mp3")
