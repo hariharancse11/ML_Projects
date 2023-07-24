@@ -15,43 +15,29 @@ from django.core.files import File
 @csrf_exempt
 @api_view(['GET'])
 def to_speech(request):
-    text = request.GET.get('text', '')
-    language = request.GET.get('language', '')
-    speed = request.GET.get('speed', '')
-    print(text, language, speed)
-    res = text_to_speech(text,language,speed)
-    return res
+    if request.method == 'GET':
+        text = request.GET.get('text')
+        language = request.GET.get('lang', 'en') 
 
-def text_to_speech(text, language, speed):
-    
-    # Example usage
-    #text, language, speed = 'Hola como estas?', 'es', 1.2
-    tts = gTTS(text=text, lang=language, slow=False)
-    tts.speed = speed
-    tts.save("output.mp3")
-    print(text, language, speed)
+        # Generate the speech using gTTS
+        tts = gTTS(text=text, lang=language, slow=False)
 
-    audio_file_path = "output.mp3"  # Replace with the actual audio file path
+        # Save the speech to an audio file in the local project folder
+        project_folder = os.path.dirname(os.path.abspath(__file__))
+        audio_file_path = os.path.join(project_folder, 'output.mp3')
+        tts.save(audio_file_path)
 
-    with open(audio_file_path, 'rb') as f:
-        file_data = File(f)
+        # Read the audio data from the file
+        with open(audio_file_path, 'rb') as f:
+            audio_data = f.read()
 
-    print("Text converted to speech")
-    # audio = AudioSegment.from_mp3(audio_file_path)
-    # new_file = speedup(audio,1.5,150)
-    # new_file.export("file.mp3", format="mp3") 
+        # Return the audio file as an HTTP response with the correct content type
+        response = HttpResponse(audio_data, content_type='audio/mpeg')
+        response['Content-Disposition'] = 'attachment; filename="output.mp3"'
 
-    with open(audio_file_path, 'rb') as f:
-        audio_data = f.read()
+        return response
 
-    response = HttpResponse(audio_data, content_type='audio/mpeg')
-    response['Content-Disposition'] = 'attachment; filename="output.mp3"'
+    return HttpResponse('Invalid request method.')
 
-    # Save the audio file in the local project folder
-    project_folder = os.path.dirname(os.path.abspath(__file__))
-    local_file_path = os.path.join(project_folder, 'output.mp3')
-    with open(local_file_path, 'wb') as f:
-        f.write(audio_data)
 
-    return response
 
