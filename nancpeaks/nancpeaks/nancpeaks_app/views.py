@@ -15,7 +15,10 @@ from django.core.files import File
 @csrf_exempt
 @api_view(['GET'])
 def to_speech(request):
-    text, language, speed = request.data.get('text'),request.data.get('language'),request.data.get('speed')
+    text = request.GET.get('text', '')
+    language = request.GET.get('language', '')
+    speed = request.GET.get('speed', '')
+    print(text, language, speed)
     res = text_to_speech(text,language,speed)
     return res
 
@@ -30,12 +33,8 @@ def text_to_speech(text, language, speed):
 
     audio_file_path = "output.mp3"  # Replace with the actual audio file path
 
-    local_file_path = '/path/to/generated/file.mp3'
     with open(audio_file_path, 'rb') as f:
         file_data = File(f)
-
-    
-
 
     print("Text converted to speech")
     # audio = AudioSegment.from_mp3(audio_file_path)
