@@ -45,11 +45,11 @@ def text_to_speech(text, language, speed):
         audio_data = f.read()
 
     response = HttpResponse(audio_data, content_type='audio/mpeg')
-    response['Content-Disposition'] = 'attachment; filename="audio.mp3"'
+    response['Content-Disposition'] = 'attachment; filename="output.mp3"'
 
     # Save the audio file in the local project folder
     project_folder = os.path.dirname(os.path.abspath(__file__))
-    local_file_path = os.path.join(project_folder, 'audio.mp3')
+    local_file_path = os.path.join(project_folder, 'output.mp3')
     with open(local_file_path, 'wb') as f:
         f.write(audio_data)
 
